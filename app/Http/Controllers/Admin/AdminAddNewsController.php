@@ -16,6 +16,7 @@ class AdminAddNewsController extends Controller
 
         if ($request->method() == "POST") {
 
+            // TODO: добавить загрузку файла и его складирование в нужную папку Storage'а
             $id = News::factory()->addNews(
                 $request->title,
                 $request->category,

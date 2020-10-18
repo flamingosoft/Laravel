@@ -1,0 +1,33 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql5-17538150a12-c93e2fb0846f5e5": {
+			"provider": "mysql",
+			"driver": "mysql5",
+			"name": "laravel5.8",
+			"description": "Laravel 5.8 на homestead 5.8",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"host": "laravel5.8",
+				"port": "3306",
+				"url": "jdbc:mysql://laravel5.8:3306/",
+				"home": "MySQL Binaries",
+				"type": "dev",
+				"auth-model": "native",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Разработка",
+			"color": "255,255,255",
+			"description": "База данных для разработки",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false
+		}
+	}
+}
