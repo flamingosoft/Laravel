@@ -16,12 +16,12 @@ class NewsDataTest extends TestCase
      */
     public function testNews()
     {
-        $this->assertTrue(is_array(News::factory()->getAllNews()));
+        $this->assertTrue(is_array(News::get()->getAllNews()));
     }
 
     public function testStructure()
     {
-        $this->assertTrue($this->is_correct_structure(News::factory()->getAllNews()));
+        $this->assertTrue($this->is_correct_structure(News::get()->getAllNews()));
     }
 
     public function testRoutes() {

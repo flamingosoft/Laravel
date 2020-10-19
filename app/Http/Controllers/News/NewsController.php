@@ -8,6 +8,7 @@ use App\Models\Categories;
 use App\Models\News;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class NewsController extends Controller
 {
@@ -17,8 +18,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Categories::factory()->getAllCategories();
-        $news = News::factory()->getAllNews();
+        $categories = Categories::get()->getAllCategories();
+        $news = News::get()->getAllNews();
         return view('news.all')
             ->with('news', $news)
             ->with('categories', $categories);
@@ -43,6 +44,6 @@ class NewsController extends Controller
     {
         //      dump($newsId);
         return view('news.id')
-            ->with("new", News::factory()->getNewsById($newsId));
+            ->with("new", News::get()->getNewsById($newsId));
     }
 }

@@ -27,7 +27,8 @@ class NewsSeeder extends Seeder
             $data[] = [
                 'title' => $faker->sentence(3,6),
                 'message' => $faker->text(1000),
-                'private' => $faker->boolean
+                'private' => $faker->boolean,
+                'categoryId' => $faker->randomNumber(1)
             ];
         }
         return $data;

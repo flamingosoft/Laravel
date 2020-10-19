@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('title', 'All news');
+@section('title', 'All news')
 
 @section('menu')
     @include('news.menu')
@@ -26,8 +26,8 @@
             @if($news)
                 <h2 class="blog-post-title">{{ __('Все новости') }}</h2>
 
-                @foreach ($news as $key => $newsItem)
-                    <p><a href="{{ route("news.byId", $key) }}">{{ $newsItem['title'] }}</a></p>
+                @foreach ($news as $newsItem)
+                    <p><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></p>
                 @endforeach
             @else
                 <h2 class="blog-post-title">{{ __('Пока нет новостей') }}</h2>

@@ -17,6 +17,7 @@ class InitNews extends Migration
             $table->bigIncrements('id')->unsigned();
             $table->string('title')->nullable(false);
             $table->text('message')->nullable(false);
+            $table->integer('categoryId')->nullable(true)->unsigned();
             $table->boolean('private')->default(false);
             $table->timestamps();
         });

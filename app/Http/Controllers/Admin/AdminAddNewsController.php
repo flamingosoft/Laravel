@@ -17,7 +17,7 @@ class AdminAddNewsController extends Controller
         if ($request->method() == "POST") {
 
             // TODO: добавить загрузку файла и его складирование в нужную папку Storage'а
-            $id = News::factory()->addNews(
+            $id = News::get()->addNews(
                 $request->title,
                 $request->category,
                 $request->message,
@@ -34,6 +34,6 @@ class AdminAddNewsController extends Controller
 //                ->with('wrongTitle', 'Wrong');
         }
         return view('admin.addNews')
-            ->with('categories', Categories::factory()->getAllCategories());
+            ->with('categories', Categories::get()->getAllCategories());
     }
 }

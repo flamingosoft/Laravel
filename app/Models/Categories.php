@@ -7,7 +7,7 @@ class Categories extends Model
 {
     private static $instance = null;
 
-    public static function factory(): Categories
+    public static function get(): Categories
     {
         if (is_null(static::$instance)) {
             static::$instance = new Categories();

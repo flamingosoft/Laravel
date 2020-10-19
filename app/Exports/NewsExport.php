@@ -8,8 +8,8 @@ use Maatwebsite\Excel\Concerns\FromArray;
 class NewsExport implements FromArray
 {
     private function prepare(): array {
-        $news = News::factory()->getAllNews();
-        $cat = Categories::factory()->getAllCategories();
+        $news = News::get()->getAllNews();
+        $cat = Categories::get()->getAllCategories();
         $res = [];
         foreach ($news as $elem) {
             $catId = array_search($elem['categoryId'], array_column($cat, 'id'));

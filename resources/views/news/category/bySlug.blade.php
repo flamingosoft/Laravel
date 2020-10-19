@@ -5,15 +5,15 @@
 @endsection
 
 @section('content')
-    <div class=" blog-main">
+    <div class="col-md-8 blog-main">
         <div class="blog-post">
-            <h2 class="blog-post-title">Новости по категории '{{ $category['title'] }}'</h2>
+            <h4 class="pb-3 mb-4 font-italic border-bottom">Новости по категории '{{ $category['title'] }}'</h4>
 
             <ul>
-                @forelse ($news as $newId => $new)
-                    <li><a href="{{ route("news.byId", $newId) }}">{{ $new["title"] }}</a></li>
+                @forelse ($news as $new)
+                    <li><a href="{{ route("news.byId", $new->id) }}">{{ $new->title }}</a></li>
                 @empty
-                    <li class="blog-post-title">Нет новостей в данной рубрике</li>
+                    <li>Нет новостей в данной рубрике</li>
                 @endforelse
             </ul>
         </div>

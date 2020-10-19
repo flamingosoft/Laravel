@@ -12,9 +12,14 @@
             Новость
         </h3>
         <div class="blog-post">
-            <h2 class="blog-post-title">{{ $new['title'] }}</h2>
-            <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
-            <p>{{ $new['message'] }}</p>
+            @if ($new)
+                <h2 class="blog-post-title">{{ $new->title }}</h2>
+                <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+                <p>{{ $new->message }}</p>
+            @else
+                <h2 class="blog-post-title">Такой новости не существует</h2>
+{{--                 TO DO: сделать 404-й ответ сервера--}}
+            @endif
         </div>
     </div>
 @endsection
