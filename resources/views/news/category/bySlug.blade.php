@@ -7,7 +7,8 @@
 @section('content')
     <div class="col-md-8 blog-main">
         <div class="blog-post">
-            <h4 class="pb-3 mb-4 font-italic border-bottom">Новости по категории '{{ $category['title'] }}'</h4>
+{{--            @dd($category);--}}
+            <h4 class="pb-3 mb-4 font-italic border-bottom">Новости по категории '{{ $category->title }}'</h4>
 
             <ul>
                 @forelse ($news as $new)

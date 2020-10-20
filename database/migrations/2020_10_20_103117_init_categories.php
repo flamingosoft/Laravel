@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class InitNews extends Migration
+class InitCategories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class InitNews extends Migration
      */
     public function up()
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned();
             $table->string('title')->nullable(false);
-            $table->text('message')->nullable(false);
-            $table->integer('categoryId')->nullable(true)->unsigned();
-            $table->boolean('private')->default(false);
-            $table->string('image')->nullable(true)->default(null);
+            $table->string('slug')->nullable(false);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class InitNews extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('categories');
     }
 }

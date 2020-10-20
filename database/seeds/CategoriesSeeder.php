@@ -6,7 +6,7 @@ use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class NewsSeeder extends Seeder
+class CategoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class NewsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('news')->insert($this->getData());
+        DB::table('categories')->insert($this->getData());
     }
 
     public function getData(): array
@@ -25,11 +25,8 @@ class NewsSeeder extends Seeder
         $faker = Factory::create("ru_RU");
         for ($row = 0; $row < 10; ++$row) {
             $data[] = [
-                'title' => $faker->sentence(3,6),
-                'message' => $faker->text(1000),
-                'private' => $faker->boolean,
-                'categoryId' => $faker->randomNumber(1),
-                'image' => null
+                'title' => $faker->sentence(1,3),
+                'slug' => $faker->word(),
             ];
         }
         return $data;

@@ -12,7 +12,7 @@
         </h4>
         <div class="blog-post">
             @forelse($categories as $category)
-                <p><a href="{{ route('news.category.bySlug', $category['slug']) }}">{{ $category['title'] }}</a></p>
+                <p><a href="{{ route('news.category.bySlug', $category->slug) }}">{{ $category->title }}</a></p>
             @empty
                 <h2 class="blog-post-title">А что-то нет категорий то совсем</h2>
             @endforelse

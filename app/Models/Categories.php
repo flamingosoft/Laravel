@@ -3,7 +3,9 @@
 namespace App\Models;
 
 
-class Categories extends Model
+use Illuminate\Support\Facades\DB;
+
+class Categories
 {
     private static $instance = null;
 
@@ -15,58 +17,31 @@ class Categories extends Model
         return static::$instance;
     }
 
-    protected  function getContainerName(): string {
-        return 'categories';
-    }
-
-    protected  function setDefault(): void {
-        $this::setData( [
-            0 => [
-                'id' => 0,
-                'title' => 'процессоры',
-                'slug' => 'cpu'
-            ],
-            1 => [
-                'id' => 1,
-                'title' => 'материнские платы',
-                'slug' => 'motherboards'
-            ],
-            2 => [
-                'id' => 2,
-                'title' => 'жетские диски',
-                'slug' => 'hdd'
-            ]
-        ]);
-    }
-
-
-
     /**
      * все категории в формате [ $categoryId ][ { 'title', 'slug' } ]
-     * @return array
      */
-    public  function getAllCategories(): array {
-        return $this->getData();
+    public  function getAllCategories() {
+        return DB::table('categories')->get();
     }
 
     /**
      * данные о категории в виде [ { 'title', 'slug' } ]
      * @param int $id
-     * @return array
+     * @return mixed
      */
-    public  function getCategoryById(int $id): array {
-        if (array_key_exists($id, $this->getData()))
-            return $this->getData()[$id];
-        else
-            return [];
+    public  function getCategoryById(int $id) {
+        return DB::table('categories')->where('id', '=', $id)->limit(1)->first();
     }
 
     /**
      * Ищем Id категории по её slug описанию
      * @param string $slug
-     * @return int | FALSE
+     * @return mixed
      */
-    public  function getCategoryByTitle(string $slug): int {
-        return array_search($slug, array_column($this->getData(), 'slug'));
+    public  function getCategoryBySlug(string $slug) {
+        return DB::table('categories')
+            ->where('slug', '=', $slug)
+            ->get()
+            ->first();
     }
 }

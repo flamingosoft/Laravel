@@ -13,6 +13,7 @@
         </h3>
         <div class="blog-post">
             @if ($new)
+                    <p><img alt="А тут изображение к новости" src="{{ $new->image }}"></p>
                 <h2 class="blog-post-title">{{ $new->title }}</h2>
                 <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
                 <p>{{ $new->message }}</p>

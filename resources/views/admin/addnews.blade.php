@@ -12,7 +12,12 @@
         </h3>
 
         <div class="blog-post">
-            <form name="addNews" method="POST" action="{{ url()->current() }}">
+            @if (isset($success))
+            <div class="alert alert-primary" role="alert">
+                A simple primary alert—check it out!
+            </div>
+            @endif
+            <form name="addNews" method="POST" action="{{ url()->current() }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="title">Заголовок новости</label>
@@ -28,7 +33,9 @@
                         <select class="form-control" id="category" name="category">
                             @foreach($categories as $category)
                                 <option
-                                    value="{{ $category['slug'] }}" {{ old('category') == $category['slug'] ? 'selected':'' }}>{{ $category['title'] }}</option>
+                                    value="{{ $category->slug }}"
+                                    {{ old('category') == $category->slug ? 'selected':'' }}>
+                                    {{ $category->title }}</option>
                             @endforeach
                             <option value="[new]" {{ old('category') == '[new]' ? 'selected':'' }}>--Новая категория--
                             </option>
@@ -43,6 +50,9 @@
                     <input type="checkbox" value="private" id="private"
                            name="private" {{ old('private') === 'private' ? 'checked':''}}>
                     <label for="private">Для зарегистрированных</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="image" >
                 </div>
                 <div class="form-group">
                     <input type="submit" value="{{ __('Создать новость') }}">

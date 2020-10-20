@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 
 
-class News extends Model
+class News
 {
     private static $instance = null;
 
@@ -17,27 +17,16 @@ class News extends Model
         return static::$instance;
     }
 
-    public function addNews($title, $category, $message, $private): int
+    public function addNews($title, $category, $message, $private, $imageUrl = null): int
     {
         return DB::table('news')
             ->insertGetId([
                 'title' => $title,
                 'message' => $message,
                 'private' => $private == 'private',
-                'categoryId' => Categories::get()->getCategoryByTitle($category)
+                'categoryId' => Categories::get()->getCategoryBySlug($category)->id,
+                'image' => $imageUrl
             ]);
-
-//        $data = $this::getData();
-//        $id = array_push($data,
-//            ['id' => 1 + max(array_keys($data)),
-//                'title' => $title,
-//                'categoryId' => Categories::get()->getCategoryByTitle($category),
-//                'message' => $message,
-//                'private' => $private == "private"
-//            ]
-//        );
-//        News::setData($data);
-//        return --$id;
     }
 
     public function getAllNews()
@@ -58,42 +47,16 @@ class News extends Model
         return DB::table('news')
             ->where("categoryId", "=", $categoryId)
             ->get("*");
-
-//        $res = array_filter($this->getData(),
-//            function ($elem) use ($categoryId) {
-//                return array_key_exists('categoryId', $elem)
-//                    && $elem['categoryId'] == $categoryId;
-//            }
-//        );
-//        return $res;
     }
 
-    protected function getContainerName(): string
+    public function getFullView()
     {
-        return 'news';
+        return DB::table('news')
+            ->select('news.title', 'news.message')
+            ->leftJoin('categories', 'news.categoryId','=', 'categories.id')
+            ->select('categories.title as category', 'news.title as title', 'news.message as message')
+            ->get();
     }
 
-    protected function setDefault(): void
-    {
-        static::setData([
-            0 => [
-                'id' => 0,
-                'title' => 'Новость по cpu',
-                'message' => 'что вам сказать :)',
-                'categoryId' => 0
-            ],
-            1 => [
-                'id' => 1,
-                'title' => 'Ну это совсеем другая новость про cpu',
-                'message' => 'Совершенно другая',
-                'categoryId' => 0
-            ],
-            2 => [
-                'id' => 2,
-                'title' => 'это про материнки',
-                'message' => 'материнки они такие материнки!',
-                'categoryId' => 1
-            ]
-        ]);
-    }
+
 }

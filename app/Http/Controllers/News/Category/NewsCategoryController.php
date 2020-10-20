@@ -15,11 +15,11 @@ class NewsCategoryController extends Controller
 
     public static function getAllNewsByCategorySlug($categorySlug)
     {
-        $categoryId = Categories::get()->getCategoryByTitle($categorySlug);
+        $category = Categories::get()->getCategoryBySlug($categorySlug);
         return view('news.category.bySlug',
             [
-                'news' => News::get()->getNewsByCategory($categoryId),
-                'category' => Categories::get()->getCategoryById($categoryId)
+                'news' => News::get()->getNewsByCategory($category->id),
+                'category' => Categories::get()->getCategoryById($category->id)
             ]);
     }
 }

@@ -12,9 +12,9 @@
             @if($categories)
                 <h2 class="blog-post-title">{{ __('Новости по категориям') }} </h2>
                 <ul>
-                    @foreach ($categories as $key => $category)
+                    @foreach ($categories as $category)
                         <li>
-                            <a href=" {{ route('news.category.bySlug', $category['slug'] ) }} ">{{ $category['title'] }}</a>
+                            <a href=" {{ route('news.category.bySlug', $category->slug ) }} ">{{ $category->title }}</a>
                         </li>
                     @endforeach
                 </ul>

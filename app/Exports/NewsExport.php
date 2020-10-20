@@ -3,9 +3,12 @@ namespace App\Exports;
 
 use App\Models\Categories;
 use App\Models\News;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use phpDocumentor\Reflection\Types\Collection;
 
-class NewsExport implements FromArray
+class NewsExport implements FromCollection
 {
     private function prepare(): array {
         $news = News::get()->getAllNews();
@@ -21,8 +24,9 @@ class NewsExport implements FromArray
         return $res;
     }
 
-    public function array(): array
+    public function collection()
     {
-        return $this->prepare();//News::factory()->getAllNews();
+        return News::get()->getFullView();
+        //return [];// $this->prepare();//News::factory()->getAllNews();
     }
 }
