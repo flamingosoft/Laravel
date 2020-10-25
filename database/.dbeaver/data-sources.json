@@ -13,10 +13,9 @@
 				"host": "laravel5.8",
 				"port": "3306",
 				"url": "jdbc:mysql://laravel5.8:3306/",
-				"home": "MySQL Binaries",
+				"home": "mysql_client",
 				"type": "dev",
-				"auth-model": "native",
-				"handlers": {}
+				"auth-model": "native"
 			}
 		}
 	},

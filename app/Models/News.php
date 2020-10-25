@@ -58,5 +58,13 @@ class News
             ->get();
     }
 
+    public function getLikeAs(string $search)
+    {
+        return DB::table('news')
+            ->where('title', 'like', '%'. $search .'%')
+            ->orWhere('message', 'like', '%' . $search . '%')
+            ->get();
+    }
+
 
 }

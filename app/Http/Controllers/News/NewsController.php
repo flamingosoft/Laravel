@@ -25,6 +25,12 @@ class NewsController extends Controller
             ->with('categories', $categories);
     }
 
+    public function search(string $search) {
+        $news = News::get()->getLikeAs($search);
+        return view('news.all')
+            ->with('news', $news);
+    }
+
     /**
      * Список всех новостей по конкретной категории
      * @param $categorySlug
