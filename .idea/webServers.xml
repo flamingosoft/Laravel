@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c78ea609-dc43-4fac-8166-ea8d0bc66030" name="seoadministrator" url="http://31.31.196.24">
+        <fileTransfer host="31.31.196.24" port="22" rootFolder="/var/www/laravel.seoadministrator.ru/" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
