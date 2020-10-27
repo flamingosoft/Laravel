@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\News\Category\NewsCategoryController;
 use App\Models\Categories;
 use App\Models\News;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
@@ -25,10 +26,12 @@ class NewsController extends Controller
             ->with('categories', $categories);
     }
 
-    public function search(string $search) {
+    public function search(Request $request) {
+        $search = $request->get('q');
         $news = News::get()->getLikeAs($search);
         return view('news.all')
-            ->with('news', $news);
+            ->with('news', $news)
+            ->with('search', mb_strtolower($search));
     }
 
     /**
@@ -48,7 +51,6 @@ class NewsController extends Controller
      */
     public function news($newsId)
     {
-        //      dump($newsId);
         return view('news.id')
             ->with("new", News::get()->getNewsById($newsId));
     }
