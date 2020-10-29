@@ -2,69 +2,57 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
 
-
-class News
+class News extends Model
 {
-    private static $instance = null;
-
-    public static function get(): News
+    public static function addNews($title, $category, $message, $private, $imageUrl = null): int
     {
-        if (is_null(static::$instance)) {
-            static::$instance = new News();
-        }
-        return static::$instance;
-    }
-
-    public function addNews($title, $category, $message, $private, $imageUrl = null): int
-    {
-        return DB::table('news')
-            ->insertGetId([
+        return static::insertGetId([
                 'title' => $title,
                 'message' => $message,
                 'private' => $private == 'private',
-                'categoryId' => Categories::get()->getCategoryBySlug($category)->id,
+                'categoryId' => Category::getCategoryBySlug($category)->id,
                 'image' => $imageUrl
             ]);
     }
 
-    public function getAllNews()
+    public static function getAllNews()
     {
-        return DB::table('news')->get();
+        return static::all();
     }
 
-    public function getNewsById(int $id)
+    public static function getNewsById(int $id)
     {
-        return DB::table('news')
-            ->where('id', '=', $id)
+        return static::where('id', '=', $id)
             ->limit(1)
             ->first();
     }
 
-    public function getNewsByCategory(int $categoryId)
+    public static function getNewsByCategory(int $categoryId)
     {
-        return DB::table('news')
-            ->where("categoryId", "=", $categoryId)
+        return static::where("categoryId", "=", $categoryId)
             ->get("*");
     }
 
-    public function getFullView()
-    {
-        return DB::table('news')
-            ->select('news.title', 'news.message')
-            ->leftJoin('categories', 'news.categoryId','=', 'categories.id')
-            ->select('categories.title as category', 'news.title as title', 'news.message as message')
-            ->get();
-    }
+//    public static function getFullView()
+//    {
+//        return static::select('news.title', 'news.message')
+//            ->leftJoin('categories', 'news.categoryId','=', 'categories.id')
+//            ->select('categories.title as category', 'news.title as title', 'news.message as message')
+//            ->get();
+//    }
 
-    public function getLikeAs(string $search)
+    public static function getLikeAs(string $search)
     {
-        return DB::table('news')
-            ->where('title', 'like', '%'. $search .'%')
+        return static::where('title', 'like', '%'. $search .'%')
             ->orWhere('message', 'like', '%' . $search . '%')
             ->get();
     }
 
+    public function Category() {
+        return $this::belongsTo('App\Models\Category',  'categoryId');
+    }
 
 }

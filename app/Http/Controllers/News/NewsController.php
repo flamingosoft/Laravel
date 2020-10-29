@@ -4,12 +4,11 @@ namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\News\Category\NewsCategoryController;
-use App\Models\Categories;
-use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\DB;
+use App\Models\Category;
+use App\Models\News;
 
 class NewsController extends Controller
 {
@@ -19,8 +18,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Categories::get()->getAllCategories();
-        $news = News::get()->getAllNews();
+        $categories = Category::getAllCategories();
+        $news = News::getAllNews();
         return view('news.all')
             ->with('news', $news)
             ->with('categories', $categories);
@@ -28,7 +27,7 @@ class NewsController extends Controller
 
     public function search(Request $request) {
         $search = $request->get('q');
-        $news = News::get()->getLikeAs($search);
+        $news = News::getLikeAs($search);
         return view('news.all')
             ->with('news', $news)
             ->with('search', mb_strtolower($search));
@@ -52,6 +51,6 @@ class NewsController extends Controller
     public function news($newsId)
     {
         return view('news.id')
-            ->with("new", News::get()->getNewsById($newsId));
+            ->with("new", News::getNewsById($newsId));
     }
 }

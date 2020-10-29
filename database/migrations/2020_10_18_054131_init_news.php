@@ -21,6 +21,7 @@ class InitNews extends Migration
             $table->boolean('private')->default(false);
             $table->string('image')->nullable(true)->default(null);
             $table->timestamps();
+            $table->foreign("categoryId", "categories");
         });
     }
 

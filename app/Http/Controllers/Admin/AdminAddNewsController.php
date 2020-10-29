@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,14 +19,14 @@ class AdminAddNewsController extends Controller
         }
         else
             return view('admin.addNews')
-                ->with('categories', Categories::get()->getAllCategories());
+                ->with('categories', Category::getAllCategories());
     }
 
     private function addNew(Request $request)
     {
         $imageUrl = self::storeImage($request->file('image'));
 
-        $id = News::get()->addNews(
+        $id = News::addNews(
             $request->title,
             $request->category,
             $request->message,

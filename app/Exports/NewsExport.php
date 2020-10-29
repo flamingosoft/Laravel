@@ -1,32 +1,21 @@
 <?php
 namespace App\Exports;
 
-use App\Models\Categories;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use phpDocumentor\Reflection\Types\Collection;
 
-class NewsExport implements FromCollection
+class NewsExport implements FromArray
 {
     private function prepare(): array {
-        $news = News::get()->getAllNews();
-        $cat = Categories::get()->getAllCategories();
-        $res = [];
-        foreach ($news as $elem) {
-            $catId = array_search($elem['categoryId'], array_column($cat, 'id'));
-            $elem['category'] = $catId === false ? 'none': $cat[$catId]['title'];
-            unset($elem['categoryId']);
-            $elem['id'] = (string)$elem['id'];
-            $res[] = $elem;
-        }
-        return $res;
+        return News::getAllNews()->toArray();
     }
 
-    public function collection()
+    public function array(): array
     {
-        return News::get()->getFullView();
-        //return [];// $this->prepare();//News::factory()->getAllNews();
+        return $this->prepare();
     }
 }
