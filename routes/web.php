@@ -33,7 +33,7 @@ Route::prefix('/')->group(function() {
 Route::prefix("/news")->name('news.')->group(function () {
     Route::get('/', [NewsController::class, 'index'])->name('home');
     Route::get('/search', [NewsController::class, 'search'])->name('search');
-    Route::get('/news:{newsId}', [NewsController::class, 'news'])->name('byId');
+    Route::get('/news:{news}', [NewsController::class, 'news'])->name('byId'); // {news} -> model News send id
 
     Route::prefix('/category')->name('category.')->group(function () {
         Route::get('/', [NewsCategoryController::class, 'index'])->name('home');
