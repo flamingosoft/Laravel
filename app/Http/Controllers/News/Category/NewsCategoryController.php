@@ -18,8 +18,8 @@ class NewsCategoryController extends Controller
         $category = Category::getCategoryBySlug($categorySlug);
         return view('news.category.bySlug',
             [
-                'news' => News::getNewsByCategory($category->id),
-                'category' => Category::getCategoryById($category->id)
+                'news' => $category->News(), //News::getNewsByCategory($category->id),
+                'category' => $category //Category::getCategoryById($category->id)
             ]);
     }
 }

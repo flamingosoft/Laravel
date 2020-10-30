@@ -35,6 +35,6 @@ class Category extends Model
     }
 
     public function News() {
-        return $this->hasMany('App\Models\News', 'categoryId')->get();
+        return $this->hasMany(News::class, 'categoryId')->get();
     }
 }

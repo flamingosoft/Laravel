@@ -62,7 +62,7 @@ class News extends Model
     }
 
     public function Category() {
-        return $this::belongsTo('App\Models\Category',  'categoryId');
+        return $this::belongsTo(Category::class,  'categoryId')->first();
     }
 
 }
