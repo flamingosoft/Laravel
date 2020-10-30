@@ -2,6 +2,7 @@
 
 namespace App\Seeders;
 
+use App\Models\Category;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class NewsSeeder extends Seeder
                 'title' => $faker->sentence(3,6),
                 'message' => $faker->text(1000),
                 'private' => $faker->boolean,
-                'categoryId' => $faker->randomNumber(1),
+                'categoryId' => random_int(Category::query()->min('id'), Category::query()->max('id')),// $faker->randomNumber(1),
                 'image' => null
             ];
         }
