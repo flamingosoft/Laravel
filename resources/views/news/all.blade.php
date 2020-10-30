@@ -48,7 +48,9 @@
                         <p>Нет новостей</p>
                     @endif
                 @endforelse
-                {{ $news->appends(['q' => $search])->links() }}
+                @if (isset($search) && !empty($search))
+                    {{ $news->appends(['q' => $search])->links() }}
+                @endif
             @else
                 <h2 class="blog-post-title">{{ __('Пока нет новостей') }}</h2>
             @endif

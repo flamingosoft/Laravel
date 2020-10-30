@@ -3,19 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use App\Models\Category;
 
 class News extends Model
 {
-    public static function addNews($title, $category, $message, $private, $imageUrl = null): int
+    protected $fillable = ['title', 'message', 'private', 'image'];
+
+    public static function addNews(Request $request, $imageUrl = null): News
     {
-        return static::insertGetId([
-                'title' => $title,
-                'message' => $message,
-                'private' => $private == 'private',
-                'categoryId' => Category::getCategoryBySlug($category)->id,
-                'image' => $imageUrl
-            ]);
+        $news = new News();
+        $news->fill($request->except(['_token']));
+        $news->save();
+        return $news;
+//
+//        return static::insertGetId()[
+//                'title' => $title,
+//                'message' => $message,
+//                'private' => $private == 'private',
+//                'categoryId' => Category::getCategoryBySlug($category)->id,
+//                'image' => $imageUrl
+//            ]);
     }
 
     public static function getAllNews()
@@ -25,9 +33,10 @@ class News extends Model
 
     public static function getNewsById(int $id)
     {
-        return static::where('id', '=', $id)
-            ->limit(1)
-            ->first();
+        return News::query()->find($id);
+//        return static::where('id', '=', $id)
+//            ->limit(1)
+//            ->first();
     }
 
     public static function getNewsByCategory(int $categoryId)

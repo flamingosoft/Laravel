@@ -26,11 +26,8 @@ class AdminAddNewsController extends Controller
     {
         $imageUrl = self::storeImage($request->file('image'));
 
-        $id = News::addNews(
-            $request->title,
-            $request->category,
-            $request->message,
-            $request->private,
+        $news = News::addNews(
+            $request,
             $imageUrl
         );
 
@@ -38,11 +35,11 @@ class AdminAddNewsController extends Controller
         $request->flash();
 
         return redirect()
-            ->route('news.byId', $id)
+            ->route('news.byId', $news)
             ->with('success', true);
     }
 
-    public function storeImage($image): string {
+    public function storeImage($image) {
         /* you must exec: php artisan storage:link!!! */
         if ($image) {
             $path = Storage::putFile('public/images', $image);
