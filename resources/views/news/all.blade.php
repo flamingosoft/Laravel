@@ -28,7 +28,7 @@
 
                 @forelse ($news as $newsItem)
                     <p><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></p>
-                    @if (isset($search))
+                    @if (isset($search) && !empty($search))
                         <p>{{ $newsItem->message }}</p>
                         <p>
                             @php
@@ -47,12 +47,12 @@
                     @else
                         <p>Нет новостей</p>
                     @endif
+                @endforelse
+                {{ $news->appends(['q' => $search])->links() }}
+            @else
+                <h2 class="blog-post-title">{{ __('Пока нет новостей') }}</h2>
+            @endif
         </div>
-        @endforelse
-        @else
-            <h2 class="blog-post-title">{{ __('Пока нет новостей') }}</h2>
-        @endif
-    </div>
     </div>
 
 @endsection

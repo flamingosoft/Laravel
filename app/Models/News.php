@@ -44,11 +44,12 @@ class News extends Model
 //            ->get();
 //    }
 
-    public static function getLikeAs(string $search)
+    public static function getLikeAs($search)
     {
-        return static::where('title', 'like', '%'. $search .'%')
+//        return News::query()->paginate(1);
+        return static::query()->where('title', 'like', '%'. $search .'%')
             ->orWhere('message', 'like', '%' . $search . '%')
-            ->get();
+            ->paginate(3);
     }
 
     public function Category() {
