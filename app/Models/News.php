@@ -28,7 +28,7 @@ class News extends Model
 
     public static function getAllNews()
     {
-        return static::all();
+        return static::query();
     }
 
     public static function getNewsById(int $id)
@@ -57,8 +57,7 @@ class News extends Model
     {
 //        return News::query()->paginate(1);
         return static::query()->where('title', 'like', '%'. $search .'%')
-            ->orWhere('message', 'like', '%' . $search . '%')
-            ->paginate(3);
+            ->orWhere('message', 'like', '%' . $search . '%');
     }
 
     public function Category() {

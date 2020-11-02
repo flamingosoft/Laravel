@@ -50,6 +50,8 @@
                 @endforelse
                 @if (isset($search) && !empty($search))
                     {{ $news->appends(['q' => $search])->links() }}
+                    @else
+                    {{ $news->links() }}
                 @endif
             @else
                 <h2 class="blog-post-title">{{ __('Пока нет новостей') }}</h2>

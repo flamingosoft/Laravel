@@ -15,7 +15,8 @@ class AlterNewsForeignkeyToCategories extends Migration
     {
         Schema::table('news', function (Blueprint $table) {
             $table->unsignedBigInteger('categoryId')->change();
-            $table->foreign("categoryId")->references('id')->on('categories');
+            $table->foreign("categoryId")->references('id')->on('categories')
+            ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

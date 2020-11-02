@@ -21,7 +21,7 @@ class NewsController extends Controller
         $categories = Category::getAllCategories();
         $news = News::getAllNews();
         return view('news.all')
-            ->with('news', $news)
+            ->with('news', $news->paginate(5))
             ->with('categories', $categories);
     }
 
@@ -29,7 +29,7 @@ class NewsController extends Controller
         $searchQuery = $request->get('q');
         $news = News::getLikeAs($searchQuery);
         return view('news.all')
-            ->with('news', $news)
+            ->with('news', $news->paginate(3))
             ->with('search', mb_strtolower($searchQuery));
     }
 

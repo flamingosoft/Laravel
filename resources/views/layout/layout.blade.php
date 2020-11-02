@@ -19,6 +19,15 @@
 <body>
 
 <div class="container">
+
+{{--    <a href="{{ route('news.category.home') }}">home</a><br>--}}
+{{--    <a href="{{ route('news.category.create') }}">create</a><br>--}}
+{{--    <a href="{{ route('news.category.store') }}">store</a><br>--}}
+{{--    <a href="{{ route('news.category.show', 0) }}">show</a><br>--}}
+{{--    <a href="{{ route('news.category.edit', 0) }}">edit</a><br>--}}
+{{--    <a href="{{ route('news.category.update', 0) }}">update</a><br>--}}
+{{--    <a href="{{ route('news.category.destroy', 0) }}">destroy</a><br>--}}
+
     <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1">
