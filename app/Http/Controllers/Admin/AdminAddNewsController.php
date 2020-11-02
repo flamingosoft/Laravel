@@ -3,37 +3,48 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class AdminAddNewsController extends Controller
 {
-    public function __invoke(Request $request, Response $response)
+    public function __invoke(Request $request)
     {
         // TODO: save data to file and redirect to this news
 
-        if ($request->method() == "POST") {
-
-            // TODO: добавить загрузку файла и его складирование в нужную папку Storage'а
-            $id = News::factory()->addNews(
-                $request->title,
-                $request->category,
-                $request->message,
-                $request->private
-            );
-
-            // получаем данные из формы
-            $request->flash();
-
-            return redirect(route('news.byId', $id));
-//            return redirect(route('admin.addNews', ['wrongTitle', 'Wrong']));
-//            return view('admin.addNews')
-//                ->with('categories', Categories::getAllCategories())
-//                ->with('wrongTitle', 'Wrong');
+        if ($request->isMethod('post')) {
+            return $this->addNew($request);
         }
-        return view('admin.addNews')
-            ->with('categories', Categories::factory()->getAllCategories());
+        else
+            return view('admin.addNews')
+                ->with('categories', Category::getAllCategories());
+    }
+
+    private function addNew(Request $request)
+    {
+        $imageUrl = self::storeImage($request->file('image'));
+
+        $news = News::addNews(
+            $request,
+            $imageUrl
+        );
+
+        // получаем данные из формы
+        $request->flash();
+
+        return redirect()
+            ->route('news.byId', $news)
+            ->with('success', true);
+    }
+
+    public function storeImage($image) {
+        /* you must exec: php artisan storage:link!!! */
+        if ($image) {
+            $path = Storage::putFile('public/images', $image);
+            return asset(Storage::url($path));
+        }
+        return null;
     }
 }

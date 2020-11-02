@@ -2,99 +2,66 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use App\Models\Category;
 
 class News extends Model
 {
-    private static $instance = null;
+    protected $fillable = ['title', 'message', 'private', 'image'];
 
-    public static function factory(): News {
-        if (is_null(static::$instance)) {
-            static::$instance = new News();
-        }
-        return static::$instance;
-    }
-
-    protected  function getContainerName(): string {
-        return 'news';
-    }
-
-    public function addNews($title, $category, $message, $private): int
+    public static function addNews(Request $request, $imageUrl = null): News
     {
-        $data = $this::getData();
-        $id = array_push($data,
-            ['id' => 1 + max(array_keys($data)),
-                'title' => $title,
-                'categoryId' => Categories::factory()->getCategoryByTitle($category),
-                'message' => $message,
-                'private' => $private == "private"
-            ]
-        );
-        News::setData($data);
-        return --$id;
+        $news = new News();
+        $news->fill($request->except(['_token']));
+        $news->save();
+        return $news;
+//
+//        return static::insertGetId()[
+//                'title' => $title,
+//                'message' => $message,
+//                'private' => $private == 'private',
+//                'categoryId' => Category::getCategoryBySlug($category)->id,
+//                'image' => $imageUrl
+//            ]);
     }
 
-    protected function setDefault(): void {
-        static::setData([
-            0 => [
-                'id' => 0,
-                'title' => 'Новость по cpu',
-                'message' => 'что вам сказать :)',
-                'categoryId' => 0
-            ],
-            1 => [
-                'id' => 1,
-                'title' => 'Ну это совсеем другая новость про cpu',
-                'message' => 'Совершенно другая',
-                'categoryId' => 0
-            ],
-            2 => [
-                'id' => 2,
-                'title' => 'это про материнки',
-                'message' => 'материнки они такие материнки!',
-                'categoryId' => 1
-            ]
-        ]);
-    }
-
-    /**
-     * Все новости в формате [$newsId][ {'id', 'title', 'message', 'categoryid'} ]
-     * @return array
-     */
-    public function getAllNews(): array
+    public static function getAllNews()
     {
-        return $this->getData();
+        return static::query();
     }
 
-    /**
-     * Новость по её id в формате [ {'id', 'title', ... } ]
-     * @param int $id
-     * @return array
-     */
-    public function getNewsById(int $id): array
+    public static function getNewsById(int $id)
     {
-        if (array_key_exists($id, $this->getData()))
-            return $this->getData()[$id];
-        else
-            return [];
+        return News::query()->find($id);
+//        return static::where('id', '=', $id)
+//            ->limit(1)
+//            ->first();
     }
 
-    /**
-     * массив новостей по номеру категории в формате [$newsId][ { 'id', 'title', ... } ]
-     * @param int $categoryId
-     * @return array
-     */
-    public function getNewsByCategory(int $categoryId): array
+    public static function getNewsByCategory(int $categoryId)
     {
-        $res = array_filter($this->getData(),
-            function ($elem) use ($categoryId) {
-                return array_key_exists('categoryId', $elem)
-                    && $elem['categoryId'] == $categoryId;
-            }
-        );
-        return $res;
+        return static::where("categoryId", "=", $categoryId)
+            ->get("*");
     }
+
+//    public static function getFullView()
+//    {
+//        return static::select('news.title', 'news.message')
+//            ->leftJoin('categories', 'news.categoryId','=', 'categories.id')
+//            ->select('categories.title as category', 'news.title as title', 'news.message as message')
+//            ->get();
+//    }
+
+    public static function getLikeAs($search)
+    {
+//        return News::query()->paginate(1);
+        return static::query()->where('title', 'like', '%'. $search .'%')
+            ->orWhere('message', 'like', '%' . $search . '%');
+    }
+
+    public function Category() {
+        return $this::belongsTo(Category::class,  'categoryId')->first();
+    }
+
 }

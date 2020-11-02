@@ -1,6 +1,7 @@
 <?php
 
-use App\NewsSeeder\NewsSeeder;
+use App\Seeders\CategoriesSeeder;
+use App\Seeders\NewsSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,8 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(CategoriesSeeder::class);
         $this->call(NewsSeeder::class);
-//        $this->call(TestSeeder::class);
         // $this->call(UsersTableSeeder::class);
     }
 }

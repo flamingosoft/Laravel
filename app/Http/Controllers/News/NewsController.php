@@ -4,10 +4,11 @@ namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\News\Category\NewsCategoryController;
-use App\Models\Categories;
-use App\Models\News;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use App\Models\Category;
+use App\Models\News;
 
 class NewsController extends Controller
 {
@@ -17,11 +18,19 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Categories::factory()->getAllCategories();
-        $news = News::factory()->getAllNews();
+        $categories = Category::getAllCategories();
+        $news = News::getAllNews();
         return view('news.all')
-            ->with('news', $news)
+            ->with('news', $news->paginate(5))
             ->with('categories', $categories);
+    }
+
+    public function search(Request $request) {
+        $searchQuery = $request->get('q');
+        $news = News::getLikeAs($searchQuery);
+        return view('news.all')
+            ->with('news', $news->paginate(3))
+            ->with('search', mb_strtolower($searchQuery));
     }
 
     /**
@@ -29,7 +38,7 @@ class NewsController extends Controller
      * @param $categorySlug
      * @return Factory|View
      */
-    public function category($categorySlug)
+    public function categoriesBySlug($categorySlug)
     {
         return NewsCategoryController::getAllNewsByCategorySlug($categorySlug);
     }
@@ -39,10 +48,9 @@ class NewsController extends Controller
      * @param $newsId
      * @return Factory|View('news.id')
      */
-    public function news($newsId)
+    public function newsOne(News $news)
     {
-        //      dump($newsId);
         return view('news.id')
-            ->with("new", News::factory()->getNewsById($newsId));
+            ->with("new", $news);
     }
 }
