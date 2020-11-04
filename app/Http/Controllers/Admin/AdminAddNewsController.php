@@ -19,17 +19,19 @@ class AdminAddNewsController extends Controller
         }
         else
             return view('admin.addNews')
-                ->with('categories', Category::getAllCategories());
+                ->with('categories', Category::all());
     }
 
     private function addNew(Request $request)
     {
         $imageUrl = self::storeImage($request->file('image'));
 
-        $news = News::addNews(
-            $request,
-            $imageUrl
-        );
+        $news = new News();
+        $news->fill($request->all());
+        $news->image = $imageUrl;
+        $news->private = isset($request->private);
+        $news->categoryId = Category::query()->where('slug', $request->category)->first()->id;
+        $news->save();
 
         // получаем данные из формы
         $request->flash();
@@ -43,7 +45,7 @@ class AdminAddNewsController extends Controller
         /* you must exec: php artisan storage:link!!! */
         if ($image) {
             $path = Storage::putFile('public/images', $image);
-            return asset(Storage::url($path));
+            return Storage::url($path);
         }
         return null;
     }

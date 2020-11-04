@@ -13,13 +13,15 @@
         </h3>
         <div class="blog-post">
             @if ($new)
-                    <p><img alt="А тут изображение к новости" src="{{ $new->image }}"></p>
+                @if (!is_null($new->image))
+                    <p><img class="newsImage" alt="А тут изображение к новости" src="{{ asset($new->image) }}"></p>
+                @endif
                 <h2 class="blog-post-title">{{ $new->title }}</h2>
                 <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
                 <p>{{ $new->message }}</p>
             @else
                 <h2 class="blog-post-title">Такой новости не существует</h2>
-{{--                 TO DO: сделать 404-й ответ сервера--}}
+                {{--                 TO DO: сделать 404-й ответ сервера--}}
             @endif
         </div>
     </div>

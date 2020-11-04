@@ -18,29 +18,22 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Category::getAllCategories();
-        $news = News::getAllNews();
+        $categories = Category::all();
+        $news = News::paginate(5);
+
         return view('news.all')
-            ->with('news', $news->paginate(5))
+            ->with('news', $news)
             ->with('categories', $categories);
     }
 
     public function search(Request $request) {
         $searchQuery = $request->get('q');
-        $news = News::getLikeAs($searchQuery);
-        return view('news.all')
-            ->with('news', $news->paginate(3))
-            ->with('search', mb_strtolower($searchQuery));
-    }
+        $news = News::query()->where('title', 'like', '%'. $searchQuery .'%')
+            ->orWhere('message', 'like', '%' . $searchQuery . '%');
 
-    /**
-     * Список всех новостей по конкретной категории
-     * @param $categorySlug
-     * @return Factory|View
-     */
-    public function categoriesBySlug($categorySlug)
-    {
-        return NewsCategoryController::getAllNewsByCategorySlug($categorySlug);
+        return view('news.all')
+            ->with('news', $news)
+            ->with('search', mb_strtolower($searchQuery));
     }
 
     /**

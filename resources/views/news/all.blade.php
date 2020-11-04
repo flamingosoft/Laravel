@@ -27,6 +27,9 @@
                 <h2 class="blog-post-title">{{ isset($search) ?  __('Поиск в новостях по "' . $search .'"'): __('Все новости') }}</h2>
 
                 @forelse ($news as $newsItem)
+                    @if ($newsItem->image)
+                        <p><img class="newsImage" src="{{ asset($newsItem->image) }}" alt="{{ $newsItem->title }}"/></p>
+                    @endif
                     <p><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></p>
                     @if (isset($search) && !empty($search))
                         <p>{{ $newsItem->message }}</p>
@@ -50,7 +53,7 @@
                 @endforelse
                 @if (isset($search) && !empty($search))
                     {{ $news->appends(['q' => $search])->links() }}
-                    @else
+                @else
                     {{ $news->links() }}
                 @endif
             @else

@@ -10,12 +10,14 @@ use Illuminate\Routing\Controller;
 class NewsCategoryController extends Controller
 {
     public static function index() {
-        return view('news.category.all')->with('categories', Category::getAllCategories());
+        return view('news.category.all')
+            ->with('categories', Category::all());
     }
 
     public static function getAllNewsByCategorySlug($categorySlug)
     {
-        $category = Category::getCategoryBySlug($categorySlug);
+        $category = Category::query()
+            ->where('slug', '=', $categorySlug)->first();
         return view('news.category.bySlug',
             [
                 'news' => $category->News(), //News::getNewsByCategory($category->id),

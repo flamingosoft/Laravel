@@ -10,9 +10,8 @@ class CategoryCRUDController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $request->flash();
         return view('news.category.item')
             ->with('title', 'Список категорий')
             ->with('mode', 'all')
@@ -35,6 +34,7 @@ class CategoryCRUDController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -48,6 +48,7 @@ class CategoryCRUDController extends Controller
      * Показывает категорию отдельной страницей со всеми полями
      *
      * @param Category $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Category $category)
     {
@@ -61,6 +62,7 @@ class CategoryCRUDController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Category $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Category $category)
     {
@@ -75,6 +77,7 @@ class CategoryCRUDController extends Controller
      *
      * @param Request $request
      * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Category $category)
     {
@@ -87,6 +90,8 @@ class CategoryCRUDController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
