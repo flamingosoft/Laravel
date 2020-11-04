@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\News\Category\NewsCategoryController;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\View;
 use App\Models\Category;
 use App\Models\News;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class NewsController extends Controller
 {
@@ -26,10 +25,13 @@ class NewsController extends Controller
             ->with('categories', $categories);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $searchQuery = $request->get('q');
-        $news = News::query()->where('title', 'like', '%'. $searchQuery .'%')
-            ->orWhere('message', 'like', '%' . $searchQuery . '%');
+        $news = News::query()
+            ->where('title', 'like', '%' . $searchQuery . '%')
+            ->orWhere('message', 'like', '%' . $searchQuery . '%')
+            ->paginate(3);
 
         return view('news.all')
             ->with('news', $news)
