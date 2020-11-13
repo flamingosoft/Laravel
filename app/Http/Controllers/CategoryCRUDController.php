@@ -27,7 +27,7 @@ class CategoryCRUDController extends Controller
         return view('news.category.item')
             ->with('title', 'Создание новой категории')
             ->with('mode', 'create')
-            ->with('category', new Category());
+            ->with('category');
     }
 
     /**
@@ -38,6 +38,8 @@ class CategoryCRUDController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, Category::rules(), Category::messages());
+
         $category = new Category();
         $category->fill($request->all());
         $category->save();
@@ -81,6 +83,7 @@ class CategoryCRUDController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $this->validate($request, Category::rules());
         $category->fill($request->all());
         $category->save();
         return redirect()->route('news.category.show', $category);

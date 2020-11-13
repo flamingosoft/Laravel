@@ -17,10 +17,12 @@ class InitNews extends Migration
             $table->bigIncrements('id')->unsigned();
             $table->string('title')->nullable(false);
             $table->text('message')->nullable(false);
-            $table->integer('categoryId')->nullable(true)->unsigned();
+            $table->unsignedBigInteger('categoryId')-> nullable(false)->unsigned()->default(1);
             $table->boolean('private')->default(false);
             $table->string('image')->nullable(true)->default(null);
             $table->timestamps();
+            $table->foreign("categoryId")->references('id')->on('categories')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
