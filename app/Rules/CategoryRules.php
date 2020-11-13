@@ -25,7 +25,9 @@ class CategoryRules implements Rule
      */
     public function passes($attribute, $value)
     {
-        return false;
+        $res = [];
+        return preg_match("/[а-яё0-9.?!,\-+_'\"@%$*()&^;: ]+/ium", $value, $res)
+            && $res[0] == $value;
     }
 
     /**
