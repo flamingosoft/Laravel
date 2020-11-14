@@ -13,11 +13,11 @@ class AlterNewsForeignkeyToCategories extends Migration
      */
     public function up()
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->unsignedBigInteger('categoryId')->change();
-            $table->foreign("categoryId")->references('id')->on('categories')
-            ->onDelete('cascade')->onUpdate('cascade');
-        });
+//        Schema::table('news', function (Blueprint $table) {
+//            $table->unsignedBigInteger('categoryId')->change();
+//            $table->foreign("categoryId")->references('id')->on('categories')
+//            ->onDelete('cascade')->onUpdate('cascade');
+//        });
     }
 
     /**
@@ -27,10 +27,10 @@ class AlterNewsForeignkeyToCategories extends Migration
      */
     public function down()
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->dropForeign(['categoryId']);
-            $table->integer('categoryId')->change();
-            // not kill column becouse it in above migration
-        });
+//        Schema::table('news', function (Blueprint $table) {
+//            $table->dropForeign(['categoryId']);
+//            $table->integer('categoryId')->change();
+//            // not kill column becouse it in above migration
+//        });
     }
 }
