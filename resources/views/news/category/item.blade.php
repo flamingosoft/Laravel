@@ -55,6 +55,7 @@
                         {{--                            @endif--}}
                         <input class="input-group" autofocus type="text" name="title"
                                value="{{ $category->title ?? old("title") ?? "" }}"
+                               maxlength="255"
                                placeholder="title...">
                         @error("title")
                         <div class="alert alert-warning" role="alert">
@@ -67,7 +68,8 @@
                         <label for="slug" class="input-group">Slug категории</label>
                             <input class="input-group" type="text" name="slug"
                                    value="{{ $category->slug ?? old("slug") ?? "" }}"
-                                   placeholder="slug...">
+                                   placeholder="slug..."
+                                   maxlength="255">
                         @error("slug")
                         <div class="alert alert-warning" role="alert">
                             @foreach($errors->get("slug") as $message)

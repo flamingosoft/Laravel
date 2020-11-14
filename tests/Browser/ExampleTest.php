@@ -6,14 +6,14 @@ use App\Models\Category;
 use App\Models\News;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
     use DatabaseMigrations;
-
-//    use RefreshDatabase;
+   // use RefreshDatabase;
 
     /**
      * A basic browser test example.
@@ -52,11 +52,27 @@ class ExampleTest extends DuskTestCase
                 ->clickLink('Create new category')
                 ->assertSee('Создание новой категории')
                 // TODO: заполнить форму новой категории теми же полями, что есть сейчас
-                // и проверить, чтобы нельзя было добавить категорию-дубликат как по названию, так и по слагу
-                // проверить на основе сообщений об ошибках
-                // TODO: потом заполнить форму правильно и сохранить
-                // нас должно перекинуть на созданную категорию, проверить это
-                ;
+                ->type("title", "<><>")
+                ->press("save")
+                ->assertInputValue("title", "<><>")
+                ->assertSee("Должен быть обычный текст из букв, цифр, знаков препинания")
+                ->assertSee("Slug нельзя делать пустым")
+                ->clear("title")
+                ->clear("slug")
+                ->type("title", "Тестовая категория")
+                ->type("slug", "test_category")
+                ->press("save")
+                ->assertSee("Название категории должно быть уникальным")
+                ->clear("title")
+                ->clear("slug")
+                ->type("title", "Новая категория")
+                ->type("slug", "newCategory")
+                ->press("save")
+                ->assertSee("id: 2")
+                ->clickLink("Новости")
+                ->clickLink("Новая категория")
+                ->assertSee("Нет новостей в данной рубрике");
+            $browser->screenshot("test.jpg");
         });
     }
 }
