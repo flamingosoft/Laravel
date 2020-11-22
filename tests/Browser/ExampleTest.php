@@ -7,6 +7,7 @@ use App\Models\News;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -38,12 +39,13 @@ class ExampleTest extends DuskTestCase
         ]);
 
 
+        dump(env('APP_URL'));
         $this->browse(function (Browser $browser) {
-            $browser->visit(gethostname(). '/news/')
+            $browser->visit(env('APP_URL') . '/news/')
                 ->assertSee('Тестовая категория')
                 ->assertSee('Простая новость')
                 // переходим на новость по ее тексту
-                ->clickLink("Простая новость")
+                ->clickLink("Прочитать полностью")
                 ->assertSee('Да, для тестирования Dusk')
                 // переходим в категории
                 ->clickLink('Все категории')

@@ -23,9 +23,7 @@ Route::prefix('/')->group(function () {
     Route::view('/about', 'about')->name('about');
     Route::view('/contacts', "contacts")->name('contacts');
     Route::view('/vue', 'vue')->name('vue');
-});
 
-Route::prefix('/')->group(function () {
     Route::view('/login', 'auth.login')->name('login');
     Route::view('/register', 'auth.register')->name('register');
 });
@@ -35,13 +33,14 @@ Route::prefix("/news")->name('news.')->group(function () {
     Route::get('/search', [NewsController::class, 'search'])->name('search');
     Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
 
-    Route::get('/category/{category}/delete', [CategoryCRUDController::class, 'destroy'])
-        ->name('category.destroy');
     Route::resource('category', 'CategoryCRUDController')
+        //->parameters()
         ->names(
             ['index' => 'category.home']
-        )
-        ->except('destroy');
+        );
+//        ->except('destroy');
+    Route::get('/category/{category}/delete', [CategoryCRUDController::class, 'destroy'])
+        ->name('category.destroy');
 //        ->only(['index', 'create', 'edit','show', 'update', 'destroy']);
     Route::prefix('/category')->name('category.')->group(function () {
         //Route::get('/', [NewsCategoryController::class, 'index'])->name('home');
