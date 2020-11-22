@@ -7,21 +7,7 @@
 @endsection
 
 @section('content')
-    @if(isset($categories))
-        <div class="col-md-6 blog-main">
-            <div class="blog-post">
-                <h2 class="blog-post-title">{{ __('Новости по категориям') }} </h2>
-                <ul>
-                    @foreach ($categories as $category)
-                        <li>
-                            <a href=" {{ route('news.category.bySlug', $category->slug ) }} ">{{ $category->title }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    @endif
-    <div class="col-md-{{ isset($categories) ? 6: 12 }} blog-main">
+    <div class="col-sm-{{ isset($categories) ? 8: 12 }} col-md-{{ isset($categories) ? 9: 12 }} blog-main">
         <div class="blog-post">
             @if(isset($news))
                 <h2 class="blog-post-title">{{ isset($search) ?  __('Поиск в новостях по "' . $search .'"'): __('Все новости') }}</h2>
@@ -30,7 +16,10 @@
                     @if ($newsItem->image)
                         <p><img class="newsImage" src="{{ asset($newsItem->image) }}" alt="{{ $newsItem->title }}"/></p>
                     @endif
-                    <p><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></p>
+{{--                    <h2><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></h2>--}}
+                        <h2>{{ $newsItem->title }}</h2>
+                    <p>{{ mb_substr($newsItem->message, 0, 300) }}...</p>
+                    <p><a href="{{ route('news.byId', $newsItem->id) }}">Прочитать полностью...</a></p>
                     @if (isset($search) && !empty($search))
                         <p>{{ $newsItem->message }}</p>
                         <p>
@@ -61,5 +50,20 @@
             @endif
         </div>
     </div>
+
+    @if(isset($categories))
+        <div class="col-sm-4 col-md-3 blog-main">
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ __('Новости по категориям') }} </h2>
+                <ul>
+                    @foreach ($categories as $category)
+                        <li>
+                            <a href=" {{ route('news.category.bySlug', $category->slug ) }} ">{{ $category->title }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
 
 @endsection

@@ -39,7 +39,7 @@ class ExampleTest extends DuskTestCase
 
 
         $this->browse(function (Browser $browser) {
-            $browser->visit('http://laravel5.8/news/')
+            $browser->visit(gethostname(). '/news/')
                 ->assertSee('Тестовая категория')
                 ->assertSee('Простая новость')
                 // переходим на новость по ее тексту
