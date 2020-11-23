@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsCRUDController extends Controller
@@ -13,7 +15,12 @@ class NewsCRUDController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        $news = News::paginate(5);
+
+        return view('news.all')
+            ->with('news', $news)
+            ->with('categories', $categories);
     }
 
     /**

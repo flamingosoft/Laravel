@@ -29,24 +29,28 @@ Route::prefix('/')->group(function () {
 });
 
 Route::prefix("/news")->name('news.')->group(function () {
-    Route::get('/', [NewsController::class, 'index'])->name('home');
+    //Route::get('/', [NewsController::class, 'index'])->name('home');
     Route::get('/search', [NewsController::class, 'search'])->name('search');
     Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
 
     Route::resource('category', 'CategoryCRUDController')
-        //->parameters()
-        ->names(
-            ['index' => 'category.home']
-        );
-//        ->except('destroy');
-    Route::get('/category/{category}/delete', [CategoryCRUDController::class, 'destroy'])
-        ->name('category.destroy');
-//        ->only(['index', 'create', 'edit','show', 'update', 'destroy']);
+        ->names(['index' => 'category.home'])
+        ->except('destroy');
+
     Route::prefix('/category')->name('category.')->group(function () {
-        //Route::get('/', [NewsCategoryController::class, 'index'])->name('home');
-        Route::get('/slug/{categorySlug}', [NewsCategoryController::class, 'getAllNewsByCategorySlug'])->name('bySlug');
+        Route::get('/{category}/delete', [CategoryCRUDController::class, 'destroy'])
+            ->name('destroy');
+        Route::get('/slug/{categorySlug}', [NewsCategoryController::class, 'getAllNewsByCategorySlug'])
+            ->name('bySlug');
     });
 });
+
+// порядок следования важен, иначе выше раздел /news/ будет воспринят как параметр, а не часть маршрута и туда будет подсовываться модель.
+// в итоге получим неработающие маршруты
+Route::resource('news', 'NewsCRUDController')
+    ->names(['index' => 'news.home'])
+    ->except('destroy');
+
 
 Route::prefix("/admin")->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('home');
