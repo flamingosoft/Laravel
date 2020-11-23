@@ -31,7 +31,7 @@ Route::prefix('/')->group(function () {
 Route::prefix("/news")->name('news.')->group(function () {
     //Route::get('/', [NewsController::class, 'index'])->name('home');
     Route::get('/search', [NewsController::class, 'search'])->name('search');
-    Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
+//    Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
 
     Route::resource('category', 'CategoryCRUDController')
         ->names(['index' => 'category.home'])
@@ -48,13 +48,16 @@ Route::prefix("/news")->name('news.')->group(function () {
 // порядок следования важен, иначе выше раздел /news/ будет воспринят как параметр, а не часть маршрута и туда будет подсовываться модель.
 // в итоге получим неработающие маршруты
 Route::resource('news', 'NewsCRUDController')
-    ->names(['index' => 'news.home'])
-    ->except('destroy');
+    ->names([
+        'index' => 'news.home',
+        'show' => 'news.byId'
+    ]);
+//    ->except('destroy');
 
 
 Route::prefix("/admin")->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('home');
-    Route::any('/addnews', 'Admin\AdminAddNewsController')->name('addNews');
+    //Route::any('/addnews', 'Admin\AdminAddNewsController')->name('addNews');
     Route::any('/getnews', 'Admin\AdminGetNewsController')->name('getNews');
 });
 

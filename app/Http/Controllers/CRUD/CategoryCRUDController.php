@@ -12,7 +12,7 @@ class CategoryCRUDController extends Controller
      */
     public function index()
     {
-        return view('news.category.item')
+        return view('news.category.all')
             ->with('title', 'Список категорий')
             ->with('mode', 'all')
             ->with('categories', Category::all());
@@ -24,7 +24,7 @@ class CategoryCRUDController extends Controller
      */
     public function create()
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('title', 'Создание новой категории')
             ->with('mode', 'create')
             ->with('category');
@@ -54,7 +54,7 @@ class CategoryCRUDController extends Controller
      */
     public function show(Category $category)
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('title', 'Информация по категории')
             ->with('mode', 'show')
             ->with('category', $category);
@@ -68,7 +68,7 @@ class CategoryCRUDController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('mode', 'edit')
             ->with('title', 'Редактирование категории')
             ->with('category', $category);

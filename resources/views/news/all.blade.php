@@ -16,10 +16,9 @@
                     @if ($newsItem->image)
                         <p><img class="newsImage" src="{{ asset($newsItem->image) }}" alt="{{ $newsItem->title }}"/></p>
                     @endif
-{{--                    <h2><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></h2>--}}
-                        <h2>{{ $newsItem->title }}</h2>
+                    {{--                    <h2><a href="{{ route('news.byId', $newsItem->id) }}">{{ $newsItem->title }}</a></h2>--}}
+                    <h2>{{ $newsItem->title }}</h2>
                     <p>{{ mb_substr($newsItem->message, 0, 300) }}...</p>
-                    <p><a href="{{ route('news.byId', $newsItem->id) }}">Прочитать полностью...</a></p>
                     @if (isset($search) && !empty($search))
                         <p>{{ $newsItem->message }}</p>
                         <p>
@@ -33,6 +32,10 @@
                             @endphp
                         </p>
                     @endif
+                    <small>
+                        <data value="{{ $newsItem->updated_at }}">{{ $newsItem->updated_at }}</data>
+                    </small>
+                    <p><a href="{{ route('news.byId', $newsItem->id) }}">Прочитать полностью...</a></p>
                 @empty
                     @if (isset($search))
                         <p>Ничего не найдено</p>

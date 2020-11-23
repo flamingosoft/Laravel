@@ -1,7 +1,7 @@
 @extends('layout.layout')
 
 @section('menu')
-    @include('news.menu')
+    @include('admin.menu')
 @endsection
 
 @section('content')

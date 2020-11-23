@@ -18,7 +18,7 @@
                             <tr>
                                 <td class="col-xs-6"><a href="{{ route("news.category.show", $category) }}">{{ $category->title }}</a></td>
                                 <td class="col-xs-3"><a href="{{ route("news.category.edit", $category) }}">Edit</a></td>
-                                <td class="col-xs-3"><a href="{{ \route("news.category.destroy", $category) }}">Delete</a></td>
+                                <td class="col-xs-3"><a href="{{ route("news.category.destroy", $category) }}">Delete</a></td>
                             </tr>
                         @empty
                             <p>Нет категорий</p>
@@ -28,13 +28,17 @@
 
                 <div class="col-sm-6 ">
                     <h3>Список новостей</h3>
-                    <ol>
+                    <table class="container col-xs-12">
                         @forelse($news as $new)
-                            <li>{{ $new->title }}</li>
+                            <tr>
+                                <td class="col-xs-6"><a href="{{ route("news.byId", $new) }}">{{ $new->title }}</a></td>
+                                <td class="col-xs-3"><a href="{{ route("news.edit", $new) }}">Edit</a></td>
+                                <td class="col-xs-3"><a href="{{ route("news.destroy", $new) }}">Delete</a></td>
+                            </tr>
                         @empty
                             <p>Нет новостей</p>
                         @endforelse
-                    </ol>
+                    </table>
                 </div>
 
             </div>

@@ -32,14 +32,4 @@ class NewsController extends Controller
             ->with('search', mb_strtolower($searchQuery));
     }
 
-    /**
-     * конкретная новость по айдишнику
-     * @param $newsId
-     * @return Factory|View('news.id')
-     */
-    public function newsOne(News $news)
-    {
-        return view('news.id')
-            ->with("new", $news);
-    }
 }

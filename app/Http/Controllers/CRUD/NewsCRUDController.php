@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewsCRUDController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $categories = Category::all();
-        $news = News::paginate(5);
+        $news = News::query()->orderByDesc('updated_at')->paginate(5);
 
         return view('news.all')
             ->with('news', $news)
@@ -26,44 +26,70 @@ class NewsCRUDController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('admin.news')
+            ->with('mode', 'create')
+            ->with('categories', Category::all()
+            );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $imageUrl = self::storeImage($request->file('image'));
+
+        $news = new News();
+        $news->fill($request->all());
+        $news->image = $imageUrl;
+        $news->private = isset($request->private);
+        $news->categoryId = Category::query()->where('slug', $request->category)->first()->id;
+        $news->save();
+
+        // получаем данные из формы
+        $request->flash();
+
+        return redirect()
+            ->route('news.byId', $news)
+            ->with('success', true);
     }
 
+    public function storeImage($image) {
+        /* you must exec: php artisan storage:link!!! */
+        if ($image) {
+            $path = Storage::putFile('public/images', $image);
+            return Storage::url($path);
+        }
+        return null;
+    }
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(News $news)
     {
-        //
+        return view('news.id')
+            ->with("new", $news)
+            ->with('mode', 'show');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news)
     {
-        //
+        return view('admin.news')
+            ->with("news", $news)
+            ->with('mode', 'edit')
+            ->with('categories', Category::all()
+            );
     }
 
     /**
