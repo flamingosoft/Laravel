@@ -5,5 +5,6 @@
 
 <a class="p-2  {{ request()->routeIs('news.category.create')?'active':'' }}" href="{{ route('news.category.create') }}">{{ __('Добавить Категорию') }}</a>
 <a class="p-2  {{ request()->routeIs('news.create')?'active':'' }}" href="{{ route('news.create') }}">{{ __('Добавить новость') }}</a>
+<a class="p-2  {{ request()->routeIs('admin.home')?'active':'' }}" href="{{ route('admin.home') }}">{{ __('Админка') }}</a>
 <a class="p-2  {{ request()->routeIs('admin.getNews')?'active':'' }}" href="{{ route('admin.getNews') }}">{{ __('Скачать новости') }}</a>
 

@@ -20,14 +20,14 @@
                             {{ \Illuminate\Support\Facades\Session::get('deleteMsg') }}
                         </div>
                     @endif
-                    >> <a href="{{ route('news.category.create') }}">Create new category</a>
+                    >> <a href="{{ route('news.category.create') }}">Создать новую категорию</a>
                     <ol>
                         @forelse($categories as $category)
                             <li>
                                 <a href="{{ route('news.category.bySlug', $category->slug) }}">{{ $category->title }}</a>
-                                : <a href="{{ route('news.category.edit', $category) }}">Edit</a>
-                                : <a href="{{ route('news.category.destroy', $category) }}">Delete</a>
-                                : <a href="{{ route('news.category.show', $category) }}">Show</a>
+                                : <a href="{{ route('news.category.edit', $category) }}">Редактировать</a>
+                                : <a href="{{ route('news.category.destroy', $category) }}">Удалить</a>
+                                : <a href="{{ route('news.category.show', $category) }}">Показать</a>
                             </li>
                         @empty
                             <h2 class="blog-post-title">А что-то нет категорий то совсем</h2>
@@ -38,7 +38,7 @@
 
                     @case('edit')
                     @case('create')
-                    @dump('news.category.' . ($mode == 'edit' ? 'update': 'store'))
+                    {{--                    @dump('news.category.' . ($mode == 'edit' ? 'update': 'store'))--}}
                     <form action="{{ route('news.category.' . ($mode == 'edit' ? 'update': 'store'), $category) }}"
                           enctype="multipart/form-data"
                           method="POST" class="form-group">
@@ -54,7 +54,7 @@
                         {{--                                </span>--}}
                         {{--                            @endif--}}
                         <input class="input-group" autofocus type="text" name="title"
-                               value="{{ $category->title ?? old("title") ?? "" }}"
+                               value="{{ old("title") ?? $category->title ?? "" }}"
                                maxlength="255"
                                placeholder="title...">
                         @error("title")
@@ -66,10 +66,10 @@
                         @enderror
 
                         <label for="slug" class="input-group">Slug категории</label>
-                            <input class="input-group" type="text" name="slug"
-                                   value="{{ $category->slug ?? old("slug") ?? "" }}"
-                                   placeholder="slug..."
-                                   maxlength="255">
+                        <input class="input-group" type="text" name="slug"
+                               value="{{ old("slug") ?? $category->slug ?? "" }}"
+                               placeholder="slug..."
+                               maxlength="255">
                         @error("slug")
                         <div class="alert alert-warning" role="alert">
                             @foreach($errors->get("slug") as $message)
@@ -80,7 +80,11 @@
 
                         <hr>
 
-                        <input class="input-group" type="submit" value="save"/>
+                        <div class="form-group">
+                            <input type="submit"
+                                   value="{{ $mode == 'edit' ? 'Сохранить изменений': 'Создать категорию' }}"/>
+                        </div>
+
                     </form>
                     @break
 

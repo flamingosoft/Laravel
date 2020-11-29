@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -227,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // my custom services
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 

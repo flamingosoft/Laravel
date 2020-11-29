@@ -17,8 +17,8 @@
                     @if (!is_null($new->image))
                         <p><img class="newsImage" alt="А тут изображение к новости" src="{{ asset($new->image) }}"></p>
                     @endif
-                    <h2 class="blog-post-title">{{ $new->title }}</h2>
-                    <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+                    <h2 class="blog-post-title">{{ $new->title }} : {{ $new->id }}</h2>
+                    <p class="blog-post-meta">{{ $new->updated_at }} в категории <a href="{{ route('news.category.bySlug', $new->Category()->slug) }}">{{ $new->Category()->title }}</a></p>
                     <p>{{ $new->message }}</p>
                 @else
                     <h2 class="blog-post-title">Такой новости не существует</h2>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\News;
+use App\Models\NewsPostRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,13 +43,20 @@ class NewsCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $imageUrl = self::storeImage($request->file('image'));
+
+        // TODO: изображение не сохранятеся в old('image')
+//        dd($request->allFiles());
 
         $news = new News();
         $news->fill($request->all());
-        $news->image = $imageUrl;
         $news->private = isset($request->private);
-        $news->categoryId = Category::query()->where('slug', $request->category)->first()->id;
+        $request->flush();
+        $this->validate($request, News::rules(), News::messages());
+
+        $news->categoryId = optional(Category::query()->where('slug', $request->category))
+            ->first()->id;
+        $imageUrl = self::storeImage($request->file('image'));
+        $news->image = $imageUrl;
         $news->save();
 
         // получаем данные из формы
@@ -97,11 +106,31 @@ class NewsCRUDController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        //
+        $news->fill($request->all());
+        $request->flash();
+        //dd($request->file('image')->getClientOriginalName());
+        // если изображение не загружали, то оставляем прежнее
+        if (!is_null($request->file('image'))) {
+            $imageUrl = self::storeImage($request->file('image'));
+            $news->image = $imageUrl;
+            $request->session()->flash('existingFile', $imageUrl);
+        }
+        $news->private = isset($request->private);
+        $news->categoryId = optional(Category::query()->where('slug', $request->category))
+            ->first()->id;
+
+        $this->validate($request, News::rules(), News::messages());
+
+        $news->save();
+
+        // получаем данные из формы
+
+        return redirect()
+            ->route('news.byId', $news)
+            ->with('success', true);
     }
 
     /**
@@ -110,7 +139,7 @@ class NewsCRUDController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
         //
     }

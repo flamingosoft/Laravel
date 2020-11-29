@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryCRUDController;
+use App\Http\Controllers\NewsCRUDController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\News\Category\NewsCategoryController;
 use App\Http\Controllers\News\NewsController;

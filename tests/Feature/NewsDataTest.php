@@ -14,17 +14,20 @@ class NewsDataTest extends TestCase
      *
      * @return void
      */
-    public function testNews()
+    /** @test */
+    public function NewsAllTest()
     {
-        $this->assertTrue(is_array(News::get()->getAllNews()));
+        $this->assertTrue(is_object(News::all()));
     }
 
-    public function testStructure()
+    /** @test */
+    public function StructureTest()
     {
-        $this->assertTrue($this->is_correct_structure(News::get()->getAllNews()));
+        $this->assertTrue($this->is_correct_structure(News::all()));
     }
 
-    public function testRoutes() {
+    /** @test */
+    public function RoutesTest() {
         $this->assertTrue($this->isTitle('home', 'Alexander Khayev laravel homework: Main page'));
         $this->assertTrue($this->isTitle('about', 'Alexander Khayev laravel homework: About Us'));
         $this->assertTrue($this->isTitle('news.home', 'Alexander Khayev laravel homework: All news'));
@@ -36,7 +39,7 @@ class NewsDataTest extends TestCase
     }
 
     protected function is_correct_structure($object) {
-        return is_array($object) &&
+        return is_object($object) &&
             !is_null($object[0]);
     }
 }

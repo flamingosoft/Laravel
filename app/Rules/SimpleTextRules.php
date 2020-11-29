@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class CategoryRules implements Rule
+class SimpleTextRules implements Rule
 {
     /**
      * Create a new rule instance.
@@ -26,7 +26,7 @@ class CategoryRules implements Rule
     public function passes($attribute, $value)
     {
         $res = [];
-        return preg_match("/[а-яё0-9.?!,\-+_'\"@%$*()&^;: ]+/ium", $value, $res)
+        return preg_match("/[a-zA-Zа-яёА-ЯЁ0-9 .?!,\-+_'\"@%$*()&^;:]+/ium", $value, $res)
             && $res[0] == $value;
     }
 
