@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\News;
 use App\Models\NewsPostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class NewsCRUDController extends Controller
@@ -67,7 +67,8 @@ class NewsCRUDController extends Controller
             ->with('success', true);
     }
 
-    public function storeImage($image) {
+    public function storeImage($image)
+    {
         /* you must exec: php artisan storage:link!!! */
         if ($image) {
             $path = Storage::putFile('public/images', $image);
@@ -75,10 +76,11 @@ class NewsCRUDController extends Controller
         }
         return null;
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      */
     public function show(News $news)
     {
@@ -90,7 +92,7 @@ class NewsCRUDController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      */
     public function edit(News $news)
     {
@@ -104,25 +106,28 @@ class NewsCRUDController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      */
     public function update(Request $request, News $news)
     {
         $news->fill($request->all());
         $request->flash();
-        //dd($request->file('image')->getClientOriginalName());
+
         // если изображение не загружали, то оставляем прежнее
         if (!is_null($request->file('image'))) {
             $imageUrl = self::storeImage($request->file('image'));
             $news->image = $imageUrl;
             $request->session()->flash('existingFile', $imageUrl);
+        } else if ($request->removeImage) {
+            $news->image = null;
         }
+
         $news->private = isset($request->private);
         $news->categoryId = optional(Category::query()->where('slug', $request->category))
             ->first()->id;
 
-        $this->validate($request, News::rules(), News::messages());
+        $this->validate($request, News::rules($news), News::messages());
 
         $news->save();
 
@@ -136,8 +141,8 @@ class NewsCRUDController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
     public function destroy(News $news)
     {

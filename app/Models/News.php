@@ -16,13 +16,13 @@ class News extends Model
         return $this::belongsTo(Category::class,  'categoryId')->first();
     }
 
-    public static function rules($id = -1)
+    public static function rules(News $news = null)
     {
         return [
             'title' => [
                 'required',
                 new SimpleTextRules(),
-                Rule::unique('news')->ignore($id) // здесь это больше для эксперимента
+                Rule::unique('news')->ignore($news ? $news->id: 0) // здесь это больше для эксперимента
             ],
             'message' => 'max:1000|required|filled',
             'category' => 'required:exists:categories,slug', // select у нас по слагу, поэтому проверяем слаг

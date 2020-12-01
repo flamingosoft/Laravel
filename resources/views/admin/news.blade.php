@@ -83,13 +83,19 @@
                     <label for="private">Для зарегистрированных</label>
                 </div>
                 <div class="form-group">
-                    @if ($mode == "edit" && !is_null($news->image))
-                        <div><img class="newsImage" src="{{ asset($news->image) }}"
-                                  alt="Тут должно быть изображение к новости"></div>
+                    @if ($mode == "edit")
+                        @if(!is_null($news->image))
+                            <label class="form-group">
+                                <input type="checkbox" name="removeImage" value="true" />
+                                Удалить изображение
+                            </label>
+                            <div><img class="newsImage" src="{{ asset($news->image) }}"
+                                      alt="Тут должно быть изображение к новости"></div>
+                        @endif
                     @endif
 
                     {{--                    @dump(\Illuminate\Support\Facades\Session::get('existingFile'))--}}
-                    <input type="file" name="image" value="{{ old('image') }}">
+                    <input type="file" name="image" accept="image/jpeg,image/png,image/gif" value="{{ old('image') }}">
                     @error("image")
                     <div class="alert alert-warning" role="alert">
                         @foreach($errors->get("image") as $message)
@@ -101,9 +107,9 @@
                 <div class="form-group">
                     <input type="submit"
                            value="{{ $mode == "create" ? __('Создать новость'): __('Сохранить изменения') }}"
-{{--                    @if (!Cookie::has('DUSK'))--}}
+                        {{--                    @if (!Cookie::has('DUSK'))--}}
                         {{ (!isset($categories) || $categories->count() == 0) ? "disabled":""}}
-{{--                    @endif--}}
+                        {{--                    @endif--}}
                     >
                 </div>
             </form>
