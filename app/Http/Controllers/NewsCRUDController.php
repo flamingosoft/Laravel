@@ -120,6 +120,7 @@ class NewsCRUDController extends Controller
             $news->image = $imageUrl;
             $request->session()->flash('existingFile', $imageUrl);
         } else if ($request->removeImage) {
+            // TODO: добавить физическое удаление изображение на сервере, чтобы не захламлять
             $news->image = null;
         }
 
