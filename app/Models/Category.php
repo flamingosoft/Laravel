@@ -29,16 +29,23 @@ class Category extends Model
     public static function messages()
     {
         return [
-            'title.unique' => 'Название категории должно быть уникальным. Такое название уже имеется',
-            'title.required' => 'Название не должно быть пустым',
-            'title.alpha_num' => 'Название должно состоять только из букв или цифр',
-            'slug.required' => 'Slug нельзя делать пустым',
-            'slug.alpha' => 'Slug должно содержать только текст',
-            'slug.unique' => 'Такой Slug уже имеется, придумайте другой'
+//            'title.unique' => 'Название категории должно быть уникальным. Такое название уже имеется',
+//            'title.required' => 'Название не должно быть пустым',
+//            'title.alpha_num' => 'Название должно состоять только из букв или цифр',
+//            'slug.required' => 'Slug нельзя делать пустым',
+//            'slug.alpha' => 'Slug должно содержать только текст',
+//            'slug.unique' => 'Такой Slug уже имеется, придумайте другой'
         ];
     }
 
     public function News() {
         return $this->hasMany(News::class, 'categoryId')->get();
+    }
+
+    public static function attributes() {
+        return [
+            'title' => '"Название категории"',
+            'slug' => '"Slug категории"'
+        ];
     }
 }

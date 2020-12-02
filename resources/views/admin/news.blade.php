@@ -38,6 +38,7 @@
                     <input type="text" class="form-control" name="title" id="title" placeholder="Заголовок новости"
                            value="{{ old('title') ?? $news->title ?? "" }}">
                     @error("title")
+                    @dump($errors->get('title'))
                     <div class="alert alert-warning" role="alert">
                         @foreach($errors->get("title") as $message)
                             <p>{{ $message }}</p>

@@ -42,7 +42,7 @@ class CategoryCRUDController extends Controller
         $category = new Category();
         $category->fill($request->all());
 
-        $this->validate($request, Category::rules($category), Category::messages());
+        $this->validate($request, Category::rules($category), Category::messages(), Category::attributes());
 
         $category->save();
         return redirect()->route('news.category.show', $category);
@@ -86,7 +86,7 @@ class CategoryCRUDController extends Controller
     public function update(Request $request, Category $category)
     {
         $category->fill($request->all());
-        $this->validate($request, Category::rules($category), Category::messages());
+        $this->validate($request, Category::rules($category), Category::messages(), Category::attributes());
         $category->save();
         return redirect()->route('news.category.show', $category);
     }

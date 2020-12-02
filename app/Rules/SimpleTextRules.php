@@ -37,6 +37,6 @@ class SimpleTextRules implements Rule
      */
     public function message()
     {
-        return 'Должен быть обычный текст из букв, цифр, знаков препинания и пробелов';
+        return 'В поле :attribute должен быть обычный текст из букв, цифр, знаков препинания и пробелов';
     }
 }

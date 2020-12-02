@@ -51,7 +51,7 @@ class NewsCRUDController extends Controller
         $news->fill($request->all());
         $news->private = isset($request->private);
         $request->flush();
-        $this->validate($request, News::rules(), News::messages());
+        $this->validate($request, News::rules(), News::messages(), News::attributes());
 
         $news->categoryId = optional(Category::query()->where('slug', $request->category))
             ->first()->id;
@@ -128,7 +128,7 @@ class NewsCRUDController extends Controller
         $news->categoryId = optional(Category::query()->where('slug', $request->category))
             ->first()->id;
 
-        $this->validate($request, News::rules($news), News::messages());
+        $this->validate($request, News::rules($news), News::messages(), News::attributes());
 
         $news->save();
 
