@@ -2,19 +2,27 @@
 
 namespace App\Models;
 
-use App\Rules\CategoryRules;
+use App\Rules\SimpleTextRules;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rule;
 
 class Category extends Model
 {
+
     protected $fillable = ['title', 'slug'];
 
-    public static function rules()
+    public static function rules($category)
     {
         // TODO: сделать
         return [
-            'title' => ['unique:categories', 'required', new CategoryRules()],
-            'slug' => 'unique:categories|required|alpha'
+            'title' => [
+                'required',
+                new SimpleTextRules(),
+                Rule::unique('categories')->ignore($category->id)
+            ],
+            'slug' => ['required', 'alpha_dash',
+                Rule::unique('categories')->ignore($category->id)
+            ]
         ];
     }
 
@@ -29,6 +37,7 @@ class Category extends Model
             'slug.unique' => 'Такой Slug уже имеется, придумайте другой'
         ];
     }
+
     public function News() {
         return $this->hasMany(News::class, 'categoryId')->get();
     }

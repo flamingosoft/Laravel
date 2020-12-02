@@ -17,12 +17,6 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $news = News::paginate(5);
-
-        return view('news.all')
-            ->with('news', $news)
-            ->with('categories', $categories);
     }
 
     public function search(Request $request)
@@ -38,14 +32,4 @@ class NewsController extends Controller
             ->with('search', mb_strtolower($searchQuery));
     }
 
-    /**
-     * конкретная новость по айдишнику
-     * @param $newsId
-     * @return Factory|View('news.id')
-     */
-    public function newsOne(News $news)
-    {
-        return view('news.id')
-            ->with("new", $news);
-    }
 }

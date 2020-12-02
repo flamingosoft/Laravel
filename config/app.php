@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -52,7 +53,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://laravel5.8'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -227,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // my custom services
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class CategoryCRUDController extends Controller
      */
     public function index()
     {
-        return view('news.category.item')
+        return view('news.category.all')
             ->with('title', 'Список категорий')
             ->with('mode', 'all')
             ->with('categories', Category::all());
@@ -24,7 +25,7 @@ class CategoryCRUDController extends Controller
      */
     public function create()
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('title', 'Создание новой категории')
             ->with('mode', 'create')
             ->with('category');
@@ -38,10 +39,11 @@ class CategoryCRUDController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, Category::rules(), Category::messages());
-
         $category = new Category();
         $category->fill($request->all());
+
+        $this->validate($request, Category::rules($category), Category::messages());
+
         $category->save();
         return redirect()->route('news.category.show', $category);
     }
@@ -54,7 +56,7 @@ class CategoryCRUDController extends Controller
      */
     public function show(Category $category)
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('title', 'Информация по категории')
             ->with('mode', 'show')
             ->with('category', $category);
@@ -68,7 +70,7 @@ class CategoryCRUDController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('news.category.item')
+        return view('admin.category')
             ->with('mode', 'edit')
             ->with('title', 'Редактирование категории')
             ->with('category', $category);
@@ -83,8 +85,8 @@ class CategoryCRUDController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $this->validate($request, Category::rules());
         $category->fill($request->all());
+        $this->validate($request, Category::rules($category), Category::messages());
         $category->save();
         return redirect()->route('news.category.show', $category);
     }

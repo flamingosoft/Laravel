@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryCRUDController;
+use App\Http\Controllers\NewsCRUDController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\News\Category\NewsCategoryController;
 use App\Http\Controllers\News\NewsController;
@@ -23,35 +24,41 @@ Route::prefix('/')->group(function () {
     Route::view('/about', 'about')->name('about');
     Route::view('/contacts', "contacts")->name('contacts');
     Route::view('/vue', 'vue')->name('vue');
-});
 
-Route::prefix('/')->group(function () {
     Route::view('/login', 'auth.login')->name('login');
     Route::view('/register', 'auth.register')->name('register');
 });
 
 Route::prefix("/news")->name('news.')->group(function () {
-    Route::get('/', [NewsController::class, 'index'])->name('home');
+    //Route::get('/', [NewsController::class, 'index'])->name('home');
     Route::get('/search', [NewsController::class, 'search'])->name('search');
-    Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
+//    Route::get('/news:{news}', [NewsController::class, 'newsOne'])->name('byId'); // {news} -> model News send id
 
-    Route::get('/category/{category}/delete', [CategoryCRUDController::class, 'destroy'])
-        ->name('category.destroy');
     Route::resource('category', 'CategoryCRUDController')
-        ->names(
-            ['index' => 'category.home']
-        )
+        ->names(['index' => 'category.home'])
         ->except('destroy');
-//        ->only(['index', 'create', 'edit','show', 'update', 'destroy']);
+
     Route::prefix('/category')->name('category.')->group(function () {
-        //Route::get('/', [NewsCategoryController::class, 'index'])->name('home');
-        Route::get('/slug/{categorySlug}', [NewsCategoryController::class, 'getAllNewsByCategorySlug'])->name('bySlug');
+        Route::get('/{category}/delete', [CategoryCRUDController::class, 'destroy'])
+            ->name('destroy');
+        Route::get('/slug/{categorySlug}', [NewsCategoryController::class, 'getAllNewsByCategorySlug'])
+            ->name('bySlug');
     });
 });
 
+// порядок следования важен, иначе выше раздел /news/ будет воспринят как параметр, а не часть маршрута и туда будет подсовываться модель.
+// в итоге получим неработающие маршруты
+Route::resource('news', 'NewsCRUDController')
+    ->names([
+        'index' => 'news.home',
+        'show' => 'news.byId'
+    ]);
+//    ->except('destroy');
+
+
 Route::prefix("/admin")->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('home');
-    Route::any('/addnews', 'Admin\AdminAddNewsController')->name('addNews');
+    //Route::any('/addnews', 'Admin\AdminAddNewsController')->name('addNews');
     Route::any('/getnews', 'Admin\AdminGetNewsController')->name('getNews');
 });
 
